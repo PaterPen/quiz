@@ -5,15 +5,16 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
-public class GenericDao<E extends Serializable> {	
-	private EntityManagerFactory factory = Persistence.createEntityManagerFactory("user");
-	protected EntityManager em = factory.createEntityManager();
+public abstract class GenericDao<E extends Serializable> {
+	protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("user");
+	protected EntityManager em = emf.createEntityManager();
 	
 	public void persist(E e) {
-		em.getTransaction().begin();
-		em.persist(e);
-		em.getTransaction().commit();
+ 		em.getTransaction().begin() ;
+		this.em.persist(e);
+ 		em.getTransaction().commit();
 	}
 	
 	public void remove(E e) {
@@ -21,4 +22,6 @@ public class GenericDao<E extends Serializable> {
 		em.remove(e);
 		em.getTransaction().commit();
 	}
+	
+	
 }
